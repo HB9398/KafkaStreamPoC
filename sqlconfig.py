@@ -14,7 +14,7 @@ cursor.execute('''
     )
 ''')
 
-# Create 'file_metadata' table (for Word/PDF)
+# Create 'unstructured_data' table (for Word/PDF)
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS unstructured_data (
         metadata_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,6 +23,17 @@ cursor.execute('''
         size INTEGER,
         creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         last_modified_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+
+# Create 'vector_store' table (Persistent FAISS storage)
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS vector_store (
+        chunk_id TEXT PRIMARY KEY,
+        original_doc_id TEXT NOT NULL,
+        section_title TEXT,
+        chunk_text TEXT NOT NULL,
+        embedding_vector BLOB NOT NULL  -- Stores FAISS vector
     )
 ''')
 
